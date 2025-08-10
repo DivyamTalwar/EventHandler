@@ -6,10 +6,15 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 4000;
 
-app.use(cors());
+// More explicit CORS configuration to ensure browser requests are not blocked.
+app.use(cors({
+  origin: '*' // Allows all origins. For production, you might want to restrict this to your actual domain.
+}));
 app.use(bodyParser.json());
 
-const mongoUri = "mongodb+srv://divyamtalwar15:mongodbreceipt@cluster0.75gu677.mongodb.net/";
+// WARNING: It is not recommended to hardcode secrets like this in production.
+// It is better to use environment variables.
+const mongoUri = "mongodb+srv://divyamtalwar15:YOUR_PASSWORD_HERE@cluster0.75gu677.mongodb.net/posthog-events?retryWrites=true&w=majority";
 const client = new MongoClient(mongoUri);
 
 let db;
