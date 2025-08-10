@@ -6,14 +6,11 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 4000;
 
-// More explicit CORS configuration to ensure browser requests are not blocked.
 app.use(cors({
   origin: '*' // Allows all origins. For production, you might want to restrict this to your actual domain.
 }));
 app.use(bodyParser.json());
 
-// WARNING: It is not recommended to hardcode secrets like this in production.
-// It is better to use environment variables.
 const mongoUri = "mongodb+srv://divyamtalwar15:YOUR_PASSWORD_HERE@cluster0.75gu677.mongodb.net/posthog-events?retryWrites=true&w=majority";
 const client = new MongoClient(mongoUri);
 
@@ -22,8 +19,8 @@ let db;
 async function connectToMongo() {
     try {
         await client.connect();
-        db = client.db();
-        console.log('Connected to MongoDB');
+        db = client.db("posthog-events");
+        console.log('Connected to MongoDB and selected database: posthog-events');
     } catch (err) {
         console.error('Failed to connect to MongoDB', err);
         process.exit(1);
@@ -57,7 +54,6 @@ app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
 });
 
-// Graceful shutdown
 process.on('SIGINT', async () => {
     await client.close();
     console.log('MongoDB connection closed');
