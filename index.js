@@ -9,7 +9,7 @@ const port = process.env.PORT || 4000;
 app.use(cors());
 app.use(bodyParser.json());
 
-const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/posthog-events';
+const mongoUri = "mongodb+srv://divyamtalwar15:mongodbreceipt@cluster0.75gu677.mongodb.net/";
 const client = new MongoClient(mongoUri);
 
 let db;
